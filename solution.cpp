@@ -16,6 +16,12 @@
         the interval from [max, min] is searched (since max >= min)
  */
 std::vector<File*> FileAVL::query(size_t min, size_t max) {
+    //making sure that we got our range set so we are looking for files in the correct range [smallest -largest]
+    if (min > max) {
+        size_t temp = min;
+        min = max;
+        max = temp;
+    }
     std::vector<File*> result;
 
     // Your code here.

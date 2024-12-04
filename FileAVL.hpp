@@ -88,14 +88,6 @@ class FileAVL {
       int size_;
 
       /**
-       * @brief we will traverse the tree to find the target file
-       * 
-       * @param target 
-       * @param subroot 
-       */
-      std::vector<File*> queryHelper(File* target, Node* subroot) const;
-      
-      /**
        * @brief Internal routine to insert into a subtree
        * 
        * @param target The value to insert

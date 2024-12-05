@@ -29,14 +29,15 @@ class FileTrie {
         FileTrieNode* head;
     
     public:
-        // Default constructor
+       // Default constructor
         FileTrie();
 
         // Add file, ignore case
         void addFile(File* f);
 
         // Search
-        std::unordered_set<File*> getFilesWithPrefix(const std::string& prefix) const;
+        // match with the prefix and keep going down the trie until the end of the prefix when at that node return the unordered set File. 
+        // std::unordered_set<File*> getFilesWithPrefix(const std::string& prefix) const;
 
         // Destructor
         ~FileTrie();

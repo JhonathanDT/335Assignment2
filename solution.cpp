@@ -1,5 +1,6 @@
 #include "FileAVL.hpp"
 #include "File.hpp"
+#include "FileTrie.hpp"
 #include <iostream>
 
 inline void helpPushBack(std::vector<File*>& files, std::vector<File*>& result) {
@@ -69,7 +70,7 @@ std::vector<File*> FileAVL::query(size_t min, size_t max) {
 
     if (min > max) {
         //do post order traversal
-        std::cout<< "the min is greater than the max.Calling the Post Order" <<std::endl;
+        // std::cout<< "the min is greater than the max.Calling the Post Order" <<std::endl;
         iteratePostOrder( root_ , result , max , min);
     }
     else {
@@ -81,55 +82,81 @@ std::vector<File*> FileAVL::query(size_t min, size_t max) {
     return result;
 }
 
+//we will need to first make all letters of the filename lowercase and then we will need to split the string by the '.' character and then we will need to add the file to the fileTrie
+void FileTrie::addFile(File* file) {
+    std::cout<<"we are adding a file to the fileTrie"<<std::endl;
+    std::string name = file->getName();
+    for (auto& x : name) { 
+        x = tolower(x); 
+    } 
+    //success at changing to lower case
+    std::cout << name;
+    //create the root node 
+    FileTrieNode* curr = head;
+    //iterate through the Trie tree
+    for( auto& c : name){
+        if( curr->next[c] == nullptr){
+            //if a node for current character does not exist make a new node
+            FileTrieNode* newNode = new FileTrieNode(); 
+            curr->next[c] = newNode;
+        }
+        curr = curr->next[c];
+    }
+}
+//to test use the matching and the stored and map to see what files are accurateley falling in the nodes. 
+FileTrie::FileTrie() {
+    head = new FileTrieNode();
+}
+FileTrie::~FileTrie() {
+    std::cout << "Deleting the fileTrie" << std::endl;
+    delete head;
+}
 
 int main() {
     std::cout << "Starting the main function." << std::endl;
-    FileAVL tree;
-    File firstFile;
-    File secondFile( "hello.world" , "something");
-    File thirdFile( "Bye.world" , "Kendrick Lamar");
-    File fourthFile( "Hola.mundo" , "J.cole");
-    File fifthFile( "Adios.mundo" , "Smi");
-    File sixthFile( "Hello.mundo" , "Jhnathan43");
-    File seventhFile("we.you" , "244gf");
-    File eigthFile( "Adios.mundo" , "wmi");
-    File ninthFile( "Adios.mundo" , "smi");
-    File tenthFile( "Adios.mundo" , "Smi");
-    File * firstFilePtr = &firstFile;
-    File * secondFilePtr = &secondFile;
-    File * thirdFilePtr = &thirdFile;
-    File * fourthFilePtr = &fourthFile;
-    File * fifthFilePtr = &fifthFile;
-    File * sixthFilePtr = &sixthFile;
-    File * seventhFilePtr = &seventhFile;
-    File * eigthFilePtr = &eigthFile;
-    File * ninthFilePtr = &ninthFile;
-    File * tenthFilePtr = &tenthFile;
-    // Folder1.push_back(firstFilePtr);
-    // Folder1.push_back(secondFilePtr);
-    // Folder2.push_back(thirdFilePtr);
-    // Folder2.push_back(fourthFilePtr);
-    // Folder2.push_back(fifthFilePtr);
-
-    tree.insert(firstFilePtr);
-    tree.insert(secondFilePtr);
-    tree.insert(thirdFilePtr);
-    tree.insert(fourthFilePtr);
-    tree.insert(fifthFilePtr);
-    tree.insert(sixthFilePtr);
-    tree.insert(seventhFilePtr);
-    tree.insert(eigthFilePtr);
-    tree.insert(ninthFilePtr);
-    tree.insert(tenthFilePtr);
-    // tree.displayInOrder();
-    // tree.displayLevelOrder();
-
-    // using the query function
-    std::vector<File*> result = tree.query(4 , 2);
-    for (int i = 0;  i < result.size(); i++) {
-        std::cout << result[i]->getName() << std::endl;
-        
-    }
+    // FileAVL tree;
+    std::vector<File> fileObjects = {
+        {"document1.txt", "This is the content of document1."},
+        {"image1.png", "Binary data representing an image."},
+        {"script1.js", "console.log('Hello, World!');"},
+        {"spreadsheet1.xlsx", "Placeholder data for an Excel file."},
+        {"presentation1.pptx", "Slide deck information goes here."},
+        {"config1.ini", "[Settings]\noption=true"},
+        {"data1.csv", "Name, Age, City\nAlice, 30, New York\nBob, 25, Boston"},
+        {"archive1.zip", "Compressed archive of files."},
+        {"readme.md", "# Read Me\nThis is a markdown file."},
+        {"program1.cpp", "#include <iostream>\nint main() { std::cout << \"Hello\"; return 0; }"},
+        {"style1.css", "body { background-color: #f0f0f0; }"},
+        {"index.html", "<!DOCTYPE html>\n<html>\n<head><title>Page</title></head>\n<body>Content</body>\n</html>"},
+        {"audio1.mp3", "Binary data for an audio file."},
+        {"video1.mp4", "Binary data for a video file."},
+        {"log1.log", "2024-12-05 10:00:00 INFO Starting application."},
+        {"script2.py", "print('Python script example')"},
+        {"notes1.rtf", "Rich Text Format notes with styling."},
+        {"database1.db", "Binary data for an SQLite database."},
+        {"vector1.svg", "<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><circle cx='50' cy='50' r='40' /></svg>"},
+        {"report1.pdf", "Binary data for a PDF document."},
+        {"config2.json", "{\"setting1\": true, \"setting2\": 42}"},
+        {"game1.exe", "Binary executable for a game."},
+        {"script3.sh", "#!/bin/bash\necho 'Shell script example'"},
+        {"notes2.docx", "Placeholder content for a Word document."},
+        {"diagram1.dwg", "Binary data for an AutoCAD diagram."},
+        {"font1.ttf", "Binary data for a TrueType font."},
+        {"backup1.tar", "Compressed tarball of backup files."},
+        {"template1.dotx", "Template for a Word document."},
+        {"spreadsheet2.ods", "OpenDocument spreadsheet data."},
+        {"project1.gradle", "buildscript { repositories { mavenCentral() } }"}
+    };
+    
+    File* fifthFilePtr = &fileObjects[4];
+    File* firstFilePtr = &fileObjects[0];
+    // File* secondFilePtr = new File(fileObjects[1]);
+    // File* thirdFilePtr = new File(fileObjects[2]);
+    // File* fourthFilePtr = new File(fileObjects[3]);
+    // File* sixthFilePtr = new File(fileObjects[5]);
+    
+    FileTrie firstTrie;
+    firstTrie.addFile(firstFilePtr);
 
     return 0;
 }

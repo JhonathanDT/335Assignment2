@@ -92,6 +92,9 @@ int main() {
     File fifthFile( "Adios.mundo" , "Smi");
     File sixthFile( "Hello.mundo" , "Jhnathan43");
     File seventhFile("we.you" , "244gf");
+    File eigthFile( "Adios.mundo" , "wmi");
+    File ninthFile( "Adios.mundo" , "smi");
+    File tenthFile( "Adios.mundo" , "Smi");
     File * firstFilePtr = &firstFile;
     File * secondFilePtr = &secondFile;
     File * thirdFilePtr = &thirdFile;
@@ -99,6 +102,9 @@ int main() {
     File * fifthFilePtr = &fifthFile;
     File * sixthFilePtr = &sixthFile;
     File * seventhFilePtr = &seventhFile;
+    File * eigthFilePtr = &eigthFile;
+    File * ninthFilePtr = &ninthFile;
+    File * tenthFilePtr = &tenthFile;
     // Folder1.push_back(firstFilePtr);
     // Folder1.push_back(secondFilePtr);
     // Folder2.push_back(thirdFilePtr);
@@ -112,6 +118,9 @@ int main() {
     tree.insert(fifthFilePtr);
     tree.insert(sixthFilePtr);
     tree.insert(seventhFilePtr);
+    tree.insert(eigthFilePtr);
+    tree.insert(ninthFilePtr);
+    tree.insert(tenthFilePtr);
     // tree.displayInOrder();
     // tree.displayLevelOrder();
 

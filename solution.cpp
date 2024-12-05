@@ -7,7 +7,7 @@ inline void helpPushBack(std::vector<File*>& files, std::vector<File*>& result) 
     for (auto& file : files) {
         result.push_back(file);
     }
-    std::cout<<"we have successfully pushed back all the files"<<std::endl;
+    // std::cout<<"we have successfully pushed back all the files"<<std::endl;
 }
 
 inline void iterateInOrder(Node* root, std::vector<File*>& result , size_t min, size_t max) {
@@ -19,18 +19,34 @@ inline void iterateInOrder(Node* root, std::vector<File*>& result , size_t min, 
     //recur left
     iterateInOrder(root->left_, result, min, max);
     //check if the current node size is in range
-    std::cout<<"we are checking the root node now"<<std::endl;
+    // std::cout<<"we are checking the root node now"<<std::endl;
     if(root->size_ >= min && root->size_ <= max) {
         //call a helper function with the parameters of the current node pointing to the files  and the result vector. 
-        std::cout<<"we are about to call the helpPushBack function"<<std::endl;
+        // std::cout<<"we are about to call the helpPushBack function"<<std::endl;
         helpPushBack( root -> files_, result);
     }
-    else{
-        std::cout<<"the root node is not in range"<<std::endl;
-    }
+    // else{
+    //     std::cout<<"the root node is not in range"<<std::endl;
+    // }
     //recur right
     iterateInOrder(root->right_, result, min, max);
 
+}
+
+inline void iteratePostOrder( Node* root, std::vector<File*>& result, size_t min, size_t max) {
+    //empty tree/base case/ no node to iterate
+    if (root == nullptr) {
+        return;
+    }
+    //recur left
+    iteratePostOrder(root->left_, result, min, max);
+    //recur right
+    iteratePostOrder(root->right_, result, min, max);
+    //check if the current node size is in range
+    if(root->size_ >= min && root->size_ <= max) {
+        //call a helper function with the parameters of the current node pointing to the files  and the result vector. 
+        helpPushBack( root -> files_, result);
+    }
 }
 
 // ALL YOUR CODE SHOULD BE IN THIS FILE. NO MODIFICATIONS SHOULD BE MADE TO FILEAVL / FILE CLASSES
@@ -53,10 +69,12 @@ std::vector<File*> FileAVL::query(size_t min, size_t max) {
 
     if (min > max) {
         //do post order traversal
+        std::cout<< "the min is greater than the max.Calling the Post Order" <<std::endl;
+        iteratePostOrder( root_ , result , max , min);
     }
     else {
         //do in-order traversal
-        std::cout<<"we are about to call the iterateInOrder function"<<std::endl;
+        // std::cout<<"we are about to call the iterateInOrder function"<<std::endl;
         iterateInOrder( root_ , result , min , max);
     }
 
@@ -94,14 +112,15 @@ int main() {
     tree.insert(fifthFilePtr);
     tree.insert(sixthFilePtr);
     tree.insert(seventhFilePtr);
-    tree.displayInOrder();
-    tree.displayLevelOrder();
+    // tree.displayInOrder();
+    // tree.displayLevelOrder();
 
     // using the query function
-    std::vector<File*> result = tree.query(2,4);
-    // for (auto file : result) {
-    //     std::cout << file << std::endl;
-    // }
+    std::vector<File*> result = tree.query(4 , 2);
+    for (int i = 0;  i < result.size(); i++) {
+        std::cout << result[i]->getName() << std::endl;
+        
+    }
 
     return 0;
 }

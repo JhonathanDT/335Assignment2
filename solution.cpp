@@ -3,7 +3,11 @@
 #include <iostream>
 
 inline void helpPushBack(std::vector<File*>& files, std::vector<File*>& result) {
-    
+    //we need to insert all files from the files vector into the result vector
+    for (auto& file : files) {
+        result.push_back(file);
+    }
+    std::cout<<"we have successfully pushed back all the files"<<std::endl;
 }
 
 inline void iterateInOrder(Node* root, std::vector<File*>& result , size_t min, size_t max) {
@@ -77,11 +81,11 @@ int main() {
     File * fifthFilePtr = &fifthFile;
     File * sixthFilePtr = &sixthFile;
     File * seventhFilePtr = &seventhFile;
-    Folder1.push_back(firstFilePtr);
-    Folder1.push_back(secondFilePtr);
-    Folder2.push_back(thirdFilePtr);
-    Folder2.push_back(fourthFilePtr);
-    Folder2.push_back(fifthFilePtr);
+    // Folder1.push_back(firstFilePtr);
+    // Folder1.push_back(secondFilePtr);
+    // Folder2.push_back(thirdFilePtr);
+    // Folder2.push_back(fourthFilePtr);
+    // Folder2.push_back(fifthFilePtr);
 
     tree.insert(firstFilePtr);
     tree.insert(secondFilePtr);
@@ -94,7 +98,7 @@ int main() {
     tree.displayLevelOrder();
 
     // using the query function
-    // std::vector<File*> result = tree.query(2,4);
+    std::vector<File*> result = tree.query(2,4);
     // for (auto file : result) {
     //     std::cout << file << std::endl;
     // }
